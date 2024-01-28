@@ -1,0 +1,10 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+
+    {% if user.is_authenticated %}
+        <strong>{{ user.username }}</strong>
+        Followers
+        Following
+    {% endif %}
+{% endblock %}

@@ -1,5 +1,17 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
-    TODO
+
+    {% if user.is_authenticated %}
+        <div class="uform">
+            <div class="upload-form">
+                <form id="compose-form">
+                    <input class="form-control" placeholder="What's on your mind?">
+                    <br>
+                    <button type="button" class="btn btn-primary btn-lg btn-block">Post</button>
+                    
+                </form>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

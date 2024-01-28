@@ -1,0 +1,107 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color:steelblue;
+    margin: 0;
+    padding: 0;
+    display:grid;
+    grid-template-columns: auto 1fr auto;
+}
+
+.body {
+    background-color: cadetblue;
+    
+}
+.right {
+    background-color: lightgray; /* Set background color for the right column */
+    padding: 20px;
+}
+
+nav {
+    background-color: #333; /* Set background color for the navbar */
+    padding: 15px;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+
+  li {
+    margin-right: 20px;
+  }
+
+  a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+  }
+
+.form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+    margin: 0;
+}
+
+.uform {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 30vh;
+}
+
+.upload-form {
+    text-align: center;    
+    background-color: lightsteelblue;
+    max-width: 600px;
+    width: 100%; 
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box; 
+    
+}
+
+#compose-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+}
+
+
+#compose-form button {
+    margin-top: 10px;
+}
+
+.login-form {
+
+    text-align:center;
+    justify-content: center;
+    align-items: center;
+    height: 40vh;
+    margin: 0;
+    background-color:lightsteelblue;
+    max-width: 400px; 
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.register-form {
+
+    text-align:center;
+    justify-content: center;
+    align-items: center;
+    height: 60vh;
+    margin: 0;
+    background-color:lightsteelblue;
+    max-width: 400px; /* Set a maximum width for the form */
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
