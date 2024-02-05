@@ -1,6 +1,38 @@
+.post-item {
+    text-align: center;
+    border: 1px solid #010101;
+    padding:15px;   
+    margin-bottom: 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+    background-color: lightsteelblue;
+    max-width: 700px;
+    width: 100%;
+}
+
+.postv {
+    
+    display: grid;
+    place-items: center;
+    margin-left: 10%;
+    margin-right: 10%; 
+}
+
+.left-bar {
+    border: 1px solid #010101;
+}
+
+
+.upost {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 30vh;
+}
+
 body {
     font-family: Arial, sans-serif;
-    background-color:steelblue;
+    background-color:cadetblue;
     margin: 0;
     padding: 0;
     display:grid;
@@ -8,29 +40,30 @@ body {
 }
 
 .body {
-    background-color: cadetblue;
+    background-color: steelblue;
     
 }
-.right {
-    background-color: lightgray; /* Set background color for the right column */
+.right-bar {
+    background-color: lightgray;
     padding: 20px;
+    border: 1px solid #010101;
 }
 
 nav {
-    background-color: #333; /* Set background color for the navbar */
+    background-color: #333;
     padding: 15px;
   }
 
   ul {
-    list-style: none;
+    list-style-type: none;
     margin: 0;
     padding: 0;
     display: flex;
+    align-items: center;
   }
 
-  li {
-    margin-right: 20px;
-  }
+
+ 
 
   a {
     text-decoration: none;
@@ -46,6 +79,7 @@ nav {
     margin: 0;
 }
 
+
 .uform {
     display: flex;
     justify-content: center;
@@ -54,15 +88,17 @@ nav {
 }
 
 .upload-form {
+    border: 1px solid #010101;
     text-align: center;    
     background-color: lightsteelblue;
-    max-width: 600px;
+    max-width: 700px;
     width: 100%; 
     padding: 20px;
-    border: 1px solid #ccc;
+    margin-top: 20px;
     border-radius: 8px;
     box-sizing: border-box; 
-    
+    margin-left: 10%;
+    margin-right: 10%;
 }
 
 #compose-form {

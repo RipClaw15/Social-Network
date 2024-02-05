@@ -12,5 +12,6 @@ urlpatterns = [
     path("profile", views.profile_view, name="profile"),
 
     # API Routes
-    path("post", views.compose, name="compose")
+    path("post", views.compose, name="compose"),
+    path("all-posts", views.render_posts, name="posts")
 ]

@@ -24,6 +24,18 @@ class Post(models.Model):
     def total_likes(self):
         return self.likes.count()
     
+    def serialize(self):
+        return {
+            "author": {
+                "id": self.author.id,
+                "username": self.author.username,
+                # Add other user attributes as needed
+            },
+            "content": self.content,
+            "date_posted": self.date_posted.strftime("%b %d %Y, %I:%M %p"),
+            "likes": [user.id for user in self.likes.all()]
+        }
+    
 
 class Relationship(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')

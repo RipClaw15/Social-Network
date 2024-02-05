@@ -29,11 +29,14 @@ def compose(request):
         )
         post.save()
         print(content)
-        return JsonResponse({"message": "Post successfully published"}, status=201)
+        return HttpResponseRedirect(reverse("index"))
         # process the content
     return JsonResponse({"error": "POST request required."}, status=400)
     
-
+def render_posts(request):
+    base_query = Post.objects
+    posts = base_query.order_by("-date_posted").all()
+    return JsonResponse([post.serialize () for post in posts], safe=False)
 
 
 def profile_view(request):
