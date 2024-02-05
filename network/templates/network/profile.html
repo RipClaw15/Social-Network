@@ -3,8 +3,8 @@
 {% block body %}
 
     {% if user.is_authenticated %}
-        <strong>{{ user.username }}</strong>
-        Followers
-        Following
+        <strong>{{ name }}</strong>
+        Followers {{ following_count }}
+        Following {{ followers_count }}
     {% endif %}
 {% endblock %}

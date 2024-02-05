@@ -19,8 +19,8 @@ function submit_post(event) {
     .then(response => response.json())
     .then(result => {
         // Print result
-        console.log("result");
-        
+        console.log(result);
+        window.location.reload();
     });
   }
 
@@ -41,7 +41,7 @@ function submit_post(event) {
             postv.innerHTML = `
                             <div class="post-item">
                               <span class="author">
-                                By <b>${poste['author'].username}</b>
+                                By <b><a href="/profile/${poste['author'].username}"style="color: inherit; text-decoration: none;">${poste['author'].username}</a></b>
                               </span>
                               <br>
                               <span class="content">

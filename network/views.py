@@ -29,7 +29,8 @@ def compose(request):
         )
         post.save()
         print(content)
-        return HttpResponseRedirect(reverse("index"))
+        return JsonResponse({"message": "Post successfully published"}, status=201)
+
         # process the content
     return JsonResponse({"error": "POST request required."}, status=400)
     
@@ -39,8 +40,11 @@ def render_posts(request):
     return JsonResponse([post.serialize () for post in posts], safe=False)
 
 
-def profile_view(request):
-    return render(request, "network/profile.html")
+def profile_view(request, username):
+    user = User.objects.get(username=username)
+    following_count = user.following.count()
+    followers_count = user.followers.count()
+    return render(request, "network/profile.html", {'name':username, 'following_count':following_count, 'followers_count': followers_count})
 
 def following(request):
     return render(request, "network/following.html")
