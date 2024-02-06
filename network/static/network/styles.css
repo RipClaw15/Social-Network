@@ -10,6 +10,13 @@
     width: 100%;
 }
 
+.prof-pic {
+    border-radius: 48%;
+    width: 100px; 
+    height: 100px; 
+    object-fit: cover;
+}
+
 .postv {
     
     display: grid;

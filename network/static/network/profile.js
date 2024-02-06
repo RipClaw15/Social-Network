@@ -1,37 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
-    document.querySelector('#compose-form').addEventListener('submit', submit_post );
-    document.querySelector('#all-posts').addEventListener('click', render_post );
     if (window.location.pathname.startsWith('/profile/')) {
-      let username = window.location.pathname.split('/')[2];
-      render_profile_post(username);
-  }
-    render_post();
-    
+        let username = window.location.pathname.split('/')[2];
+        render_profile_post(username);
+    }
 });
 
-function submit_post(event) {
-    event.preventDefault();
-    console.log("result");
-    const content = document.querySelector('#compose-content').value;
-    fetch('/post', {
-      method: 'POST',
-      body: JSON.stringify({
-          
-        content: content
-          
-      })
-    })
-    .then(response => response.json())
-    .then(result => {
-        // Print result
-        console.log(result);
-        window.location.reload();
-    });
-  }
-
-  function render_post(){
-    
-    let apiUrl = `/all-posts`;
+function render_profile_post(username){
+    let apiUrl = `/profile-posts/${username}`;
 
     fetch(apiUrl)
     .then(response => response.json())
@@ -39,7 +14,9 @@ function submit_post(event) {
         console.log(posts);
         let postList = document.createElement('div');
         postList.classList.add('posts');
-        document.querySelector('#posts-view').appendChild(postList);
+        let profilePostsView = document.querySelector('#profile-posts-view');
+        console.log(profilePostsView);
+        profilePostsView.appendChild(postList);
         posts.forEach(poste => {
           const postv = document.createElement('div');
           postv.setAttribute('class','postv')
@@ -62,5 +39,3 @@ function submit_post(event) {
 
     })
   }
-
-  

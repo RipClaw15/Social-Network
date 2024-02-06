@@ -1,10 +1,26 @@
 {% extends "network/layout.html" %}
+{% load static %}
 
 {% block body %}
 
     {% if user.is_authenticated %}
+        
+            <img src="{{ user.profileimg.url }}" alt="Profile Picture" width="100" class="prof-pic">
+        
         <strong>{{ name }}</strong>
         Followers {{ following_count }}
+    {% if user.username != name %} 
+    <form method="POST" action="{% url 'follow_unfollow' name %}">
+        {% csrf_token %}
+        <input type="submit" value="{% if is_following %}Unfollow{% else %}Follow{% endif %}">
+    </form>
+    {% endif %}
         Following {{ followers_count }}
     {% endif %}
+    <div id="profile-posts-view">
+    </div>
+    {% block script %}
+        <script src="{% static 'network/profile.js' %}"></script>
+    {% endblock %}
+
 {% endblock %}

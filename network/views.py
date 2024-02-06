@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.shortcuts import redirect
 
 from .models import User, Post
 
@@ -39,12 +40,36 @@ def render_posts(request):
     posts = base_query.order_by("-date_posted").all()
     return JsonResponse([post.serialize () for post in posts], safe=False)
 
+def follow_unfollow(request, username):
+    if request.method == 'POST':
+        # Get the user to be followed/unfollowed
+        other_user = User.objects.get(username=username)
+        if request.user.following.filter(username=username).exists():
+            request.user.following.remove(other_user)
+
+        else:
+            request.user.following.add(other_user)
+        return redirect('profile', username=username)
+    return redirect('profile', username=username)
+
+
+def profile_posts(request, username):
+    user = User.objects.get(username=username)
+    base_query = Post.objects.filter(author=user)
+    posts = base_query.order_by("-date_posted").all()
+    return JsonResponse([post.serialize () for post in posts], safe=False)
 
 def profile_view(request, username):
     user = User.objects.get(username=username)
-    following_count = user.following.count()
-    followers_count = user.followers.count()
-    return render(request, "network/profile.html", {'name':username, 'following_count':following_count, 'followers_count': followers_count})
+    following_count = user.followers.count()
+    followers_count = user.following.count()
+    is_following = request.user.following.filter(username=username).exists()
+    return render(request, "network/profile.html", 
+                  {'name':username, 
+                   'following_count':following_count, 
+                   'followers_count': followers_count, 
+                   'is_following': is_following
+                   })
 
 def following(request):
     return render(request, "network/following.html")
