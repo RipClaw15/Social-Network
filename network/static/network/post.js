@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function submit_post(event) {
     event.preventDefault();
-    console.log("result");
+    
     const content = document.querySelector('#compose-content').value;
     fetch('/post', {
       method: 'POST',
@@ -23,13 +23,11 @@ function submit_post(event) {
     })
     .then(response => response.json())
     .then(result => {
-        // Print result
-        console.log(result);
         window.location.reload();
     });
   }
 
-  function render_post(){ 
+function render_post(){ 
     let apiUrl = `/all-posts`;
 
     fetch(apiUrl)
@@ -41,54 +39,61 @@ function submit_post(event) {
         document.querySelector('#posts-view').appendChild(postList);
         posts.forEach(postData => {
             
-        let postDiv = createPostHTML(postData);  
+            let postDiv = createPostHTML(postData);  
                             
-                            
-                            fetch(`/post/${postData['id']}/liked_by_current_user`)
-                            .then(response => response.json())
-                            .then(data => {
-                              const likeButton = postDiv.querySelector('.like-button');
-
-                              if (data.liked) {
-                                likeButton.textContent = 'Unlike';
-                              } else {
-                                likeButton.textContent = 'Like';
-                              }
-                            });
-
-                            
-              postDiv.querySelector('.like-button').addEventListener('click', (event) => {
-              
-              const postId = event.target.dataset.postId;
-
-              let likeButton = postDiv.querySelector('.like-button');
-              likeButton.disabled = true;
-
-              let likesCount = postDiv.querySelector('.likes');
-              let count = parseInt(likesCount.textContent);
-
-              fetch(`/post/${postId}/like`, {
-                  method: 'POST'
-              })
-              .then(response => response.json())
-              .then(data => {
-                
-                  if (data.action === 'liked') {
-                      event.target.textContent = 'Unlike';
-                      count++;
-                  } else {
-                      event.target.textContent = 'Like';
-                      count--;
-                  }
-                  likesCount.textContent = `${count}`;
-                  likeButton.disabled = false;
-              });
-          });
-          postList.appendChild(postDiv);
-          })
+            liked_by_current_user(postData, postDiv)  
         
+            like_post(postDiv)
+
+            postList.appendChild(postDiv);
+        })
 
     })
+  }
+
+  function liked_by_current_user(postData, postDiv)
+  {
+    fetch(`/post/${postData['id']}/liked_by_current_user`)
+    .then(response => response.json())
+    .then(data => {
+      const likeButton = postDiv.querySelector('.like-button');
+
+      if (data.liked) {
+        likeButton.textContent = 'Unlike';
+      } else {
+        likeButton.textContent = 'Like';
+      }});
+  }
+
+  function like_post(postDiv)
+  {
+    postDiv.querySelector('.like-button').addEventListener('click', (event) => {
+              
+      const postId = event.target.dataset.postId;
+
+      let likeButton = postDiv.querySelector('.like-button');
+      likeButton.disabled = true;
+
+      let likesCount = postDiv.querySelector('.likes');
+      let count = parseInt(likesCount.textContent);
+
+      fetch(`/post/${postId}/like`, {
+          method: 'POST'
+      })
+      .then(response => response.json())
+      .then(data => {
+        
+          if (data.action === 'liked') {
+              event.target.textContent = 'Unlike';
+              count++;
+          } else {
+              event.target.textContent = 'Like';
+              count--;
+          }
+          likesCount.textContent = `${count}`;
+          likeButton.disabled = false;
+      });
+  });
   }
 
   function createPostHTML(postData){

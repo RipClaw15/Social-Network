@@ -14,29 +14,90 @@ function render_profile_post(username){
         console.log(posts);
         let postList = document.createElement('div');
         postList.classList.add('posts');
-        let profilePostsView = document.querySelector('#profile-posts-view');
-        console.log(profilePostsView);
+        let profilePostsView = document.querySelector('#posts-view');
+        
         profilePostsView.appendChild(postList);
-        posts.forEach(poste => {
-          const postv = document.createElement('div');
-          postv.setAttribute('class','postv')
-            postv.innerHTML = `
-                            <div class="post-item">
-                            <img src="${poste['author'].profileimg}" alt="Profile Picture" width="100" class="prof-pic">
-                              <span class="author">
-                                By <b><a href="/profile/${poste['author'].username}"style="color: inherit; text-decoration: none;">${poste['author'].username}</a></b>
-                              </span>
-                              <br>
-                              <span class="content">
-                                ${poste['content']}
-                              </span>
-                              <br>
-                              <span class="date-posted">
-                                <b>${poste['date_posted']}</b>
-                              </span>
-                            </div>`;
-          postList.appendChild(postv);
+        posts.forEach(postData => {
+
+            let postDiv = createPostHTML(postData);  
+                            
+            liked_by_current_user(postData, postDiv)  
+          
+            like_post(postDiv)
+            
+            postList.appendChild(postDiv);
         })
 
     })
+  }
+
+  function liked_by_current_user(postData, postDiv)
+  {
+    fetch(`/post/${postData['id']}/liked_by_current_user`)
+    .then(response => response.json())
+    .then(data => {
+      const likeButton = postDiv.querySelector('.like-button');
+
+      if (data.liked) {
+        likeButton.textContent = 'Unlike';
+      } else {
+        likeButton.textContent = 'Like';
+      }});
+  }
+
+  function like_post(postDiv)
+  {
+    postDiv.querySelector('.like-button').addEventListener('click', (event) => {
+              
+      const postId = event.target.dataset.postId;
+
+      let likeButton = postDiv.querySelector('.like-button');
+      likeButton.disabled = true;
+
+      let likesCount = postDiv.querySelector('.likes');
+      let count = parseInt(likesCount.textContent);
+
+      fetch(`/post/${postId}/like`, {
+          method: 'POST'
+      })
+      .then(response => response.json())
+      .then(data => {
+        
+          if (data.action === 'liked') {
+              event.target.textContent = 'Unlike';
+              count++;
+          } else {
+              event.target.textContent = 'Like';
+              count--;
+          }
+          likesCount.textContent = `${count}`;
+          likeButton.disabled = false;
+      });
+  });
+  }
+
+  function createPostHTML(postData){
+
+          const postDiv = document.createElement('div');
+          postDiv.setAttribute('class','postDiv')
+          postDiv.innerHTML = `
+                              <div class="post-item">
+                              <img src="${postData['author'].profileimg}" alt="Profile Picture" width="100" class="prof-pic">
+                              <span class="author">
+                                By <b><a href="/profile/${postData['author'].username}" style="color: inherit; text-decoration: none;">${postData['author'].username}</a></b>
+                              </span>
+                              <br>
+                              <span class="content">
+                                ${postData['content']}
+                              </span>
+                              <br>
+                              <span class="date-posted">
+                                <b>${postData['date_posted']}</b>
+                              </span>
+                              <button class="like-button" data-post-id="${postData['id']}">Like</button>
+                              <span class="likes">
+                              ${postData['total_likes']}
+                              </span>
+                            </div>`;
+        return postDiv;
   }
