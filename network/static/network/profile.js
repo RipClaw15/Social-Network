@@ -23,60 +23,61 @@ function render_profile_post(username){
                             
             liked_by_current_user(postData, postDiv)  
           
-            like_post(postDiv)
-            
+            like_post(postData, postDiv)
+
             postList.appendChild(postDiv);
         })
 
     })
   }
 
-  function liked_by_current_user(postData, postDiv)
-  {
+  function liked_by_current_user(postData, postDiv) {
     fetch(`/post/${postData['id']}/liked_by_current_user`)
     .then(response => response.json())
     .then(data => {
-      const likeButton = postDiv.querySelector('.like-button');
+        const likeButton = postDiv.querySelector('.like-button');
 
-      if (data.liked) {
-        likeButton.textContent = 'Unlike';
+        if (data.liked) {
+          likeButton.innerHTML = "<i style='font-size:36px;' class='fas'>&#xf004;</i>";
+          likeButton.title = "Unlike";
       } else {
-        likeButton.textContent = 'Like';
-      }});
-  }
+          likeButton.innerHTML = "<i style='font-size:36px;' class='far'>&#xf004;</i>";
+          likeButton.title = "Like";
+      }
+    });
+}
 
-  function like_post(postDiv)
-  {
+  function like_post(postData, postDiv) {
     postDiv.querySelector('.like-button').addEventListener('click', (event) => {
-              
-      const postId = event.target.dataset.postId;
-
-      let likeButton = postDiv.querySelector('.like-button');
-      likeButton.disabled = true;
-
-      let likesCount = postDiv.querySelector('.likes');
-      let count = parseInt(likesCount.textContent);
-
-      fetch(`/post/${postId}/like`, {
-          method: 'POST'
-      })
-      .then(response => response.json())
-      .then(data => {
+        const postId = postData['id'];
         
-          if (data.action === 'liked') {
-              event.target.textContent = 'Unlike';
-              count++;
-          } else {
-              event.target.textContent = 'Like';
-              count--;
-          }
-          likesCount.textContent = `${count}`;
-          likeButton.disabled = false;
-      });
-  });
-  }
+        let likeButton = postDiv.querySelector('.like-button');
+        likeButton.disabled = true;
 
-  function createPostHTML(postData){
+        let likesCount = postDiv.querySelector('.likes');
+        let count = parseInt(likesCount.textContent);
+
+        fetch(`/post/${postId}/like`, {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.action === 'liked') {
+            likeButton.innerHTML = "<i style='font-size:36px;' class='fas'>&#xf004;</i>";
+            likeButton.title = "Unlike";
+            count++;
+        } else {
+            likeButton.innerHTML = "<i style='font-size:36px;' class='far'>&#xf004;</i>";
+            likeButton.title = "Like";
+            count--;
+        }
+        likesCount.textContent = `${count}`;
+        likeButton.disabled = false;
+        });
+    });
+}
+
+function createPostHTML(postData){
 
           const postDiv = document.createElement('div');
           postDiv.setAttribute('class','postDiv')
@@ -94,7 +95,10 @@ function render_profile_post(username){
                               <span class="date-posted">
                                 <b>${postData['date_posted']}</b>
                               </span>
-                              <button class="like-button" data-post-id="${postData['id']}">Like</button>
+                              
+                              <button class="like-button" data-post-id="${postData['id']}">
+                                <i style='font-size:36px;' class='far'>&#xf004;</i>
+                              </button>
                               <span class="likes">
                               ${postData['total_likes']}
                               </span>

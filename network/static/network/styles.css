@@ -9,7 +9,10 @@
     max-width: 700px;
     width: 100%;
 }
-
+.like-button {
+    background: none;
+    border:none;
+  }
 .prof-pic {
     border-radius: 48%;
     width: 100px; 
