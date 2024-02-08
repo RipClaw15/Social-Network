@@ -17,7 +17,7 @@
     object-fit: cover;
 }
 
-.postv {
+.postDiv {
     
     display: grid;
     place-items: center;

@@ -38,7 +38,7 @@ def compose(request):
 def render_posts(request):
     base_query = Post.objects
     posts = base_query.order_by("-date_posted").all()
-    return JsonResponse([post.serialize () for post in posts], safe=False)
+    return JsonResponse([post.serialize(request.user) for post in posts], safe=False)
 
 def follow_unfollow(request, username):
     if request.method == 'POST':
@@ -52,6 +52,38 @@ def follow_unfollow(request, username):
         return redirect('profile', username=username)
     return redirect('profile', username=username)
 
+def liked_by_current_user(request, post_id):
+    # Get the post
+    post = Post.objects.get(id=post_id)
+
+    # Check if the current user has liked this post
+    liked = request.user.id in post.likes.values_list('id', flat=True)
+   
+    # Return the result as a JSON response
+    return JsonResponse({'liked': liked})
+
+
+
+
+@csrf_exempt
+def like_post(request, post_id):
+    if request.method == "POST":
+        try:
+            post = Post.objects.get(id=post_id)
+        except Post.DoesNotExist:
+            return JsonResponse({'error': 'Post not found'}, status=404)
+
+        if request.user in post.likes.all():
+            post.likes.remove(request.user)
+            action = 'unliked'
+        else:
+            post.likes.add(request.user)
+            action = 'liked'
+        post.save()
+        return JsonResponse({'success': True,
+                             'action': action})
+    else:
+        return JsonResponse({'error': 'Invalid request'}, status=400)
 
 def profile_posts(request, username):
     user = User.objects.get(username=username)

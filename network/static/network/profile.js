@@ -22,6 +22,7 @@ function render_profile_post(username){
           postv.setAttribute('class','postv')
             postv.innerHTML = `
                             <div class="post-item">
+                            <img src="${poste['author'].profileimg}" alt="Profile Picture" width="100" class="prof-pic">
                               <span class="author">
                                 By <b><a href="/profile/${poste['author'].username}"style="color: inherit; text-decoration: none;">${poste['author'].username}</a></b>
                               </span>

@@ -20,21 +20,24 @@ class Post(models.Model):
     content = models.TextField()
     date_posted = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(User, blank = True, null = True)
-
     def total_likes(self):
         return self.likes.count()
-    
-    def serialize(self):
-        return {
+    def serialize(self, user=None):
+        serialized_data = {
             "author": {
                 "id": self.author.id,
                 "username": self.author.username,
-                # Add other user attributes as needed
+                "profileimg": self.author.profileimg.url
             },
             "content": self.content,
             "date_posted": self.date_posted.strftime("%b %d %Y, %I:%M %p"),
-            "likes": [user.id for user in self.likes.all()]
+            "likes": [user.id for user in self.likes.all()],
+            "total_likes": self.total_likes() ,
+            "id": self.id,
         }
+        if user is not None:
+            serialized_data["user_has_liked"] = user in self.likes.all()
+        return serialized_data
     
 
 class Relationship(models.Model):

@@ -25,6 +25,9 @@
 
     {% block script %}
         <script src="{% static 'network/post.js' %}"></script>
+        <script>
+            var MEDIA_URL = "{{ MEDIA_URL }}";
+          </script>
     {% endblock %}
 {% endblock %}
 
