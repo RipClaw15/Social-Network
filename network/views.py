@@ -15,6 +15,27 @@ from .models import User, Post
 def index(request):
     return render(request, "network/index.html")
 
+def all_posts(request):
+    return render(request, "network/all_posts.html")
+
+@csrf_exempt
+@login_required
+def edit(request, post_id):
+    try:
+        post = Post.objects.get(author=request.user, pk=post_id)
+    except Post.DoesNotExist:
+        return JsonResponse({"error": "Post not found."}, status=404)
+    
+    if request.method == "PUT":
+        data = json.loads(request.body)
+        post.content = data["body"]
+        post.save()
+        return HttpResponse(status=204)
+    else:
+        return JsonResponse({
+            "error": "PUT request required."
+        }, status=400)
+
 
 @csrf_exempt
 @login_required
@@ -89,7 +110,7 @@ def profile_posts(request, username):
     user = User.objects.get(username=username)
     base_query = Post.objects.filter(author=user)
     posts = base_query.order_by("-date_posted").all()
-    return JsonResponse([post.serialize () for post in posts], safe=False)
+    return JsonResponse([post.serialize (request.user) for post in posts], safe=False)
 
 def profile_view(request, username):
     user = User.objects.get(username=username)
@@ -105,6 +126,16 @@ def profile_view(request, username):
 
 def following(request):
     return render(request, "network/following.html")
+
+def following_posts(request):
+    
+    user = User.objects.get(username=request.user.username)
+    following = user.following.all()
+    
+    base_query = Post.objects.filter(author__in=following)
+    posts = base_query.order_by("-date_posted").all()
+    return JsonResponse([post.serialize (request.user) for post in posts], safe=False)
+    
 
 def login_view(request):
     if request.method == "POST":

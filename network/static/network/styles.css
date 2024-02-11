@@ -1,4 +1,4 @@
-.post-item {
+.post-item,  .edit-form{
     text-align: center;
     border: 1px solid #010101;
     padding:15px;   
@@ -9,6 +9,8 @@
     max-width: 700px;
     width: 100%;
 }
+
+
 .like-button {
     background: none;
     border:none;

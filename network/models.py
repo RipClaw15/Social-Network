@@ -12,7 +12,10 @@ class User(AbstractUser):
     
 
     def __str__(self):
-        return str(self.user)
+        return self.username
+    
+    def who_I_follow(self):
+        return str(self.following)
     
 
 class Post(models.Model):
@@ -29,6 +32,7 @@ class Post(models.Model):
                 "username": self.author.username,
                 "profileimg": self.author.profileimg.url
             },
+            "is_author": self.author.username == user.username,
             "content": self.content,
             "date_posted": self.date_posted.strftime("%b %d %Y, %I:%M %p"),
             "likes": [user.id for user in self.likes.all()],
@@ -43,3 +47,9 @@ class Post(models.Model):
 class Relationship(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
     follows = models.ForeignKey(User, on_delete=models.CASCADE, related_name='follows')
+
+class Comment(models.Model):
+    content = models.TextField()
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
