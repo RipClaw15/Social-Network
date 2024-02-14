@@ -3,17 +3,20 @@ document.addEventListener('DOMContentLoaded', function() {
   if (window.location.pathname === '/all_posts') {
       document.querySelector('#compose-form').addEventListener('submit', submit_post);
       document.querySelector('#all-posts').addEventListener('click', render_post);
-      render_post();
+      let apiUrl = `/all-posts`;
+      render_post(apiUrl);
   }
 
   if (window.location.pathname === '/following') {
-    render_following_posts();
+    let apiUrl = `/following-posts`;
+      render_post(apiUrl);
   }
   
   // Check if it's a profile page
   if (window.location.pathname.startsWith('/profile/')) {
       let username = window.location.pathname.split('/')[2];
-      render_profile_post(username);
+      let apiUrl = `/profile-posts/${username}`;
+      render_post(apiUrl);
   }
 });
 
@@ -35,32 +38,10 @@ function submit_post(event) {
     });
   }
 
-function render_following_posts(){
-  let apiUrl = `/following-posts`;
 
-  fetch(apiUrl)
-    .then(response => response.json())
-    .then(posts => {
-        
-        let postList = document.createElement('div');
-        postList.classList.add('posts');
-        document.querySelector('#posts-view').appendChild(postList);
-        posts.forEach(postData => {
-            
-            let postDiv = createPostHTML(postData);  
-                            
-            liked_by_current_user(postData, postDiv)  
-        
-            like_post(postData, postDiv)
 
-            postList.appendChild(postDiv);
-        })
-
-    })
-}
-
-function render_post(){ 
-    let apiUrl = `/all-posts`;
+function render_post(apiUrl){ 
+    
 
     fetch(apiUrl)
     .then(response => response.json())
@@ -73,85 +54,13 @@ function render_post(){
             
             let postDiv = createPostHTML(postData);  
                             
-            liked_by_current_user(postData, postDiv)  
+            liked_by_current_user(postData, postDiv);  
         
-            like_post(postData, postDiv)
-
-            postList.appendChild(postDiv);
-        })
-
-    })
-  }
-
-  function render_profile_post(username){
-    let apiUrl = `/profile-posts/${username}`;
-
-    fetch(apiUrl)
-    .then(response => response.json())
-    .then(posts => {
-        console.log(posts);
-        let postList = document.createElement('div');
-        postList.classList.add('posts');
-        let profilePostsView = document.querySelector('#posts-view');
-        
-        profilePostsView.appendChild(postList);
-        posts.forEach(postData => {
-
-            let postDiv = createPostHTML(postData);  
-                       
-            liked_by_current_user(postData, postDiv)  
-          
-            like_post(postData, postDiv)
+            like_post(postData, postDiv);
 
             postList.appendChild(postDiv);
 
-            if (postData.is_author){
-              document.querySelector('#edit-' + postData['id']).addEventListener('click', (event) => {
-                let postId = event.target.dataset.postId;
-                let post = document.querySelector(`#post-${postId}`);
-                let content = postData.content;
-                console.log(content);
-                document.querySelector('#post-' + postId).style.display= 'none';
-                document.querySelector('#edit-view-' + postId).style.display = 'block';
-                document.querySelector('#edit-view-' + postId).innerHTML = 
-                `<div class="edit-form">
-                    <h3>Edit Post</h3>
-                      <form id="compose-form">
-                        <textarea id="compose-body"></textarea>
-                        <br>
-                        <input type="submit" class="btn btn-primary"/>
-                      </form>
-                 </div>
-                `
-                document.querySelector("#compose-body").value = content;
-                
-                document.querySelector('#compose-form').addEventListener('submit', (event) => {
-
-                event.preventDefault();
-
-                const body_content = document.querySelector('#compose-body').value;
-
-                fetch(`/post/${postId}/edit`, {
-                  method: 'PUT',
-                  
-                  body: JSON.stringify({
-                    body: body_content
-                  })
-                })
-                .then(() => {
-
-                  document.querySelector(`#post-content-${postId}`).textContent = body_content;
-
-                  document.querySelector('#edit-view-' + postId).style.display = 'none';
-                  document.querySelector('#post-' + postId).style.display= 'block';
-                  
-                })
-                
-              })
-
-              })
-
-            }
+            edit_post (postData, postDiv);
         })
 
     })
@@ -173,7 +82,7 @@ function render_post(){
     });
 }
 
-
+  
   function like_post(postData, postDiv) {
     postDiv.querySelector('.like-button').addEventListener('click', (event) => {
         const postId = postData['id'];
@@ -217,7 +126,7 @@ function render_post(){
                               <div class="post-item" id="post-${postData['id']}">
                               <img src="${postData['author'].profileimg}" alt="Profile Picture" width="100" class="prof-pic">
                               <span class="author">
-                              ${postData['is_author'] ? `<button data-post-id="${postData['id']}" id="edit-${postData['id']}">Edit</button>` : ''}
+                              ${postData['is_author'] ? `<button class="edit-button" data-post-id="${postData['id']}" id="edit-${postData['id']}">Edit</button>` : ''}
                                 By <b><a href="/profile/${postData['author'].username}" style="color: inherit; text-decoration: none;">${postData['author'].username}</a></b>
                               </span>
                               <br>
@@ -238,4 +147,51 @@ function render_post(){
                             </div>`;
         return postDiv;
 
+  }
+
+  function edit_post (postData, postDiv)
+  {
+    if (postData.is_author){
+      document.querySelector('#edit-' + postData['id']).addEventListener('click', (event) => {
+        let editButtons = document.querySelectorAll('.edit-button');
+        editButtons.forEach(button => button.disabled = true);
+        let postId = event.target.dataset.postId;
+        let content = postData.content;
+        console.log(content);
+        document.querySelector('#post-' + postId).style.display= 'none';
+        document.querySelector('#edit-view-' + postId).style.display = 'block';
+        document.querySelector('#edit-view-' + postId).innerHTML = 
+        `<div class="edit-form">
+            <h3>Edit Post</h3>
+              <form id="compose-form-${postData['id']}">
+                <textarea id="compose-body-${postData['id']}"></textarea>
+                <br>
+                <input type="submit" class="btn btn-primary"/>
+              </form>
+         </div>    `
+         let handleSubmit = (event) => {
+          event.preventDefault();
+          console.log(content);
+            const body_content = document.querySelector('#compose-body-' + postId).value;
+            fetch(`/post/${postId}/edit`, 
+              {
+                method: 'PUT',
+                body: JSON.stringify({body: body_content})
+              })
+            .then(() => 
+            {
+              document.querySelector(`#post-content-${postId}`).textContent = body_content;
+              document.querySelector('#edit-view-' + postId).style.display = 'none';
+              document.querySelector('#post-' + postId).style.display= 'block';
+              document.querySelector('#compose-form-' + postId).removeEventListener('submit', handleSubmit);
+              editButtons.forEach(button => button.disabled = false);         
+            })
+      }
+        document.querySelector('#compose-body-' + postId).value = content;
+        document.querySelector('#compose-form-' + postId).addEventListener('submit', handleSubmit);
+        
+
+      })
+
+    }
   }
