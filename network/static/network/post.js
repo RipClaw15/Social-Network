@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
   // Check if it's the all-posts page
+  
   if (window.location.pathname === '/all_posts') {
       document.querySelector('#compose-form').addEventListener('submit', submit_post);
       document.querySelector('#all-posts').addEventListener('click', render_post);
@@ -18,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
       let apiUrl = `/profile-posts/${username}`;
       render_post(apiUrl);
   }
+  
 });
 
 function submit_post(event) {
@@ -61,6 +63,7 @@ function render_post(apiUrl){
             postList.appendChild(postDiv);
 
             edit_post (postData, postDiv);
+           
         })
 
     })
@@ -122,29 +125,51 @@ function render_post(apiUrl){
           postDiv.setAttribute('class','postDiv')
           postDiv.innerHTML = `
                               <div class="edit-view" id="edit-view-${postData['id']}">
+
                               </div>
                               <div class="post-item" id="post-${postData['id']}">
-                              <img src="${postData['author'].profileimg}" alt="Profile Picture" width="100" class="prof-pic">
-                              <span class="author">
-                              ${postData['is_author'] ? `<button class="edit-button" data-post-id="${postData['id']}" id="edit-${postData['id']}">Edit</button>` : ''}
-                                By <b><a href="/profile/${postData['author'].username}" style="color: inherit; text-decoration: none;">${postData['author'].username}</a></b>
-                              </span>
-                              <br>
-                              <span id="post-content-${postData['id']}" class="content">
-                              ${postData['content']}
-                              </span>
-                              <br>
-                              <span class="date-posted">
-                                <b>${postData['date_posted']}</b>
-                              </span>
+                                <div class="up-row">
+                                  <span class="author">
+                                    <img src="${postData['author'].profileimg}" alt="Profile Picture" width="100" class="post-pic">
+                                      By 
+                                        <b>
+                                          <a href="/profile/${postData['author'].username}" style="color: inherit; text-decoration: none;">${postData['author'].username}</a>
+                                        </b>
+                                  </span>
+                                  <span class="date-posted">
+                                    <b>
+                                      ${postData['date_posted']}
+                                    </b>
+                                  </span>
+                                </div>
+                                <hr>
+                                <div class="middle-row">
+                                  <span id="post-content-${postData['id']}" class="content">
+                                    <h3>${postData['content']}</h3>
+                                  </span>
+                                  <div class="edit">
+                                    ${postData['is_author'] ? `<button class="edit-button" data-post-id="${postData['id']}" id="edit-${postData['id']}">Edit</button>` : ''}
+                                  </div>
+                                </div>
+                                <hr>
+                                <div class="lower-row">
+                                  <span>
+                                    <b>
+                                      <button class="like-button" data-post-id="${postData['id']}">
+                                        <i style='font-size:36px;' class='far'>&#xf004;</i>
+                                      </button>
+                                      <span class="likes">
+                                        ${postData['total_likes']}
+                                      </span>
+                                  </span>
+                                  <span class="comments">
+                                    Comments
+                                    0
+                                    </b>
+                                  </span>   
+                                </div>
+                              </div>`;
                               
-                              <button class="like-button" data-post-id="${postData['id']}">
-                                <i style='font-size:36px;' class='far'>&#xf004;</i>
-                              </button>
-                              <span class="likes">
-                              ${postData['total_likes']}
-                              </span>
-                            </div>`;
         return postDiv;
 
   }
@@ -168,7 +193,22 @@ function render_post(apiUrl){
                 <br>
                 <input type="submit" class="btn btn-primary"/>
               </form>
-         </div>    `
+         </div>    `;
+
+         setTimeout(function() {
+          let textarea = document.querySelector('#compose-body-' + postData['id']);
+          console.log(textarea);
+          textarea.addEventListener('input', function() {
+              console.log("a");
+              this.style.height = 'auto';
+              this.style.height = (this.scrollHeight) + 'px';
+              console.log(this.scrollHeight);
+          });
+          let event = new Event('input');
+          textarea.dispatchEvent(event);
+      }, 0);
+
+          
          let handleSubmit = (event) => {
           event.preventDefault();
           console.log(content);
@@ -180,7 +220,7 @@ function render_post(apiUrl){
               })
             .then(() => 
             {
-              document.querySelector(`#post-content-${postId}`).textContent = body_content;
+              document.querySelector(`#post-content-${postId} h3`).textContent = body_content;
               document.querySelector('#edit-view-' + postId).style.display = 'none';
               document.querySelector('#post-' + postId).style.display= 'block';
               document.querySelector('#compose-form-' + postId).removeEventListener('submit', handleSubmit);
@@ -192,6 +232,6 @@ function render_post(apiUrl){
         
 
       })
-
+      
     }
   }

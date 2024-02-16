@@ -1,4 +1,4 @@
-.post-item,  .edit-form{
+.post-item,  .edit-view{
     text-align: center;
     border: 1px solid #010101;
     padding:15px;   
@@ -8,10 +8,38 @@
     background-color: rgb(179, 179, 179);
     max-width: 700px;
     width: 100%;
+    
 }
 
+textarea {
+    width: 95%;
+    
+}
 
-.like-button {
+.edit-view{
+    display: none;
+}
+
+.content {
+    text-align: start;
+}
+.edit {
+    text-align: end;
+}
+
+.up-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.lower-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.like-button, .edit-button {
     background: none;
     border:none;
   }
@@ -19,6 +47,12 @@
     border-radius: 48%;
     width: 100px; 
     height: 100px; 
+    object-fit: cover;
+}
+.post-pic {
+    border-radius: 48%;
+    width: 50px; 
+    height: 50px; 
     object-fit: cover;
 }
 
