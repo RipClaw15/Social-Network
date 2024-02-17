@@ -83,7 +83,12 @@ def liked_by_current_user(request, post_id):
     # Return the result as a JSON response
     return JsonResponse({'liked': liked})
 
-
+def follow_list(request, username):
+    user = User.objects.get(username=username)
+    followers_usernames = user.followers_list()
+    following_usernames = user.following_list()
+    print("Followers:", followers_usernames)
+    print("Following:", following_usernames)
 
 
 @csrf_exempt
@@ -110,18 +115,28 @@ def profile_posts(request, username):
     user = User.objects.get(username=username)
     base_query = Post.objects.filter(author=user)
     posts = base_query.order_by("-date_posted").all()
+    
     return JsonResponse([post.serialize (request.user) for post in posts], safe=False)
 
 def profile_view(request, username):
     user = User.objects.get(username=username)
     following_count = user.followers.count()
     followers_count = user.following.count()
-    is_following = request.user.following.filter(username=username).exists()
+    followers_usernames = user.my_followers()
+    following_usernames = user.who_I_follow()   
+    profile_img = user.profileimg
+    if request.user.is_authenticated:
+        is_following = request.user.following.filter(username=username).exists()
+    else:
+        is_following = False
     return render(request, "network/profile.html", 
                   {'name':username, 
+                   'profile_img': profile_img,
                    'following_count':following_count, 
                    'followers_count': followers_count, 
-                   'is_following': is_following
+                   'is_following': is_following,
+                   'followers_usernames': followers_usernames,
+                   'following_usernames': following_usernames
                    })
 
 def following(request):

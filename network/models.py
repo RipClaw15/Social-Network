@@ -9,13 +9,16 @@ class User(AbstractUser):
     location = models.TextField(blank=True)
     profileimg = models.ImageField(upload_to='profile_images', default='blank-profile-picture.png')
     following = models.ManyToManyField('self', through='Relationship', symmetrical=False, related_name='followers')
-    
 
     def __str__(self):
         return self.username
     
     def who_I_follow(self):
-        return str(self.following)
+        return [user.username for user in self.following.all()]
+    
+    def my_followers(self):
+        return [relationship.user.username for relationship in self.follows.all()]
+    
     
 
 class Post(models.Model):

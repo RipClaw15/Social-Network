@@ -3,24 +3,54 @@
 
 {% block body %}
 
-    {% if user.is_authenticated %}
+    <div class="profile-section">
         
-            <img src="{{ user.profileimg.url }}" alt="Profile Picture" width="100" class="prof-pic">
-        
+        <img src="{{ profile_img.url }}" alt="Profile Picture" width="100" class="prof-pic">
+            
         <strong>{{ name }}</strong>
-        Followers {{ following_count }}
-    {% if user.username != name %} 
-    <form method="POST" action="{% url 'follow_unfollow' name %}">
-        {% csrf_token %}
-        <input type="submit" value="{% if is_following %}Unfollow{% else %}Follow{% endif %}">
-    </form>
-    {% endif %}
-        Following {{ followers_count }}
-    {% endif %}
+        <button id="followers">
+            <div> {{ following_count }}</div>
+            Followers
+        </button>
+        {% if user.is_authenticated %}
+            {% if user.username != name %} 
+            <form method="POST" action="{% url 'follow_unfollow' name %}">
+                {% csrf_token %}
+                <input type="submit" value="{% if is_following %}Unfollow{% else %}Follow{% endif %}">
+            </form>
+            {% endif %}
+        {% endif %}
+        <button id="followings">
+            <div>{{ followers_count }}</div> 
+            Following
+        </button>
+        
+        <div class="modal" id="modal">
+            <div class="modal-inner">
+                <h2>Followers</h2>
+                
+                    {% for follower in followers_usernames %}
+                    
+                        <p><b><a href="/profile/{{ follower }}" style="color: inherit; text-decoration: none;">{{ follower }}</a></b></p>
+                        
+                    {% endfor %}
+                
+                <button id="closeModal">Close</button>
+            </div>
+        </div>
+    </div>
+    <div id="app"></div>
+    
+
+    
     <div id="posts-view">
     </div>
     {% block script %}
         <script src="{% static 'network/post.js' %}"></script>
+        <script src="{% static 'network/profile.js' %}"></script>
+        <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+        <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
     {% endblock %}
 
 {% endblock %}

@@ -39,7 +39,7 @@ textarea {
     align-items: center;
 }
 
-.like-button, .edit-button {
+.like-button, .edit-button, #followers, #followings {
     background: none;
     border:none;
   }
@@ -187,3 +187,47 @@ nav {
     border-radius: 8px;
 }
 
+.modal {
+    background-color: rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transition: all 0.3s ease-in-out;
+    z-index: -1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.open {
+    opacity: 1;
+    z-index: 999;
+}
+
+.modal-inner {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    padding: 15px 25px;
+    text-align: center;
+    width: 380px;
+}
+
+.modal-inner h2 {
+    margin: 0;
+}
+
+.modal-inner p {
+    line-height: 24px;
+    margin: 10px;
+}
+
+.profile-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
