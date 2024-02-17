@@ -7,6 +7,8 @@
         <div>{{ message }}</div>
     {% endif %}
     {% if user.is_authenticated %}
+
+    <script type="text/babel" src="path_to_your_file/CreatePost.jsx"></script>
         <div class="uform">
             <div class="upload-form">
                 <form id="compose-form" action="{% url 'index' %}" method="post">
@@ -27,7 +29,7 @@
         <script src="{% static 'network/post.js' %}"></script>
         <script>
             var MEDIA_URL = "{{ MEDIA_URL }}";
-          </script>
+        </script>
     {% endblock %}
 {% endblock %}
 

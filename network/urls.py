@@ -20,6 +20,7 @@ urlpatterns = [
     path("all-posts", views.render_posts, name="posts"),
     path('post/<int:post_id>/edit', views.edit, name="edit"),
     path("following-posts", views.following_posts, name="following_posts"),
+    path("profile-list/<str:username>", views.follow_list, name="follow_list"),
     path("profile-posts/<str:username>", views.profile_posts, name="profile-posts"),
     path("post/<int:post_id>/liked_by_current_user", views.liked_by_current_user, name="liked_by_current_user"),
     
