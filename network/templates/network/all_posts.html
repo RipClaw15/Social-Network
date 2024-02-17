@@ -8,18 +8,10 @@
     {% endif %}
     {% if user.is_authenticated %}
 
-    <script type="text/babel" src="path_to_your_file/CreatePost.jsx"></script>
-        <div class="uform">
-            <div class="upload-form">
-                <form id="compose-form" action="{% url 'index' %}" method="post">
-                    {% csrf_token %}
-                    <input class="form-control" id="compose-content" placeholder="What's on your mind?">
-                    <br>
-                    <button type="submit" class="btn btn-primary btn-lg btn-block">Post</button>
-                </form>
-            </div>
-        </div>
+    <script type="text/babel" src="{% static 'network/react.jsx' %}"></script>
+        <div id="react-root"></div>
     {% endif %}
+
 
     <div id="posts-view">
     </div>
@@ -27,6 +19,9 @@
 
     {% block script %}
         <script src="{% static 'network/post.js' %}"></script>
+        <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
+        <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
         <script>
             var MEDIA_URL = "{{ MEDIA_URL }}";
         </script>

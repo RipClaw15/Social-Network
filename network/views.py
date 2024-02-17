@@ -8,10 +8,17 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import redirect
+from django import forms
 
 from .models import User, Post
 
+class ProfileForms(forms.ModelForm):
 
+    class Meta:
+        model = User
+        fields = ['bio', 'profileimg']
+
+@csrf_exempt
 def index(request):
     return render(request, "network/index.html")
 

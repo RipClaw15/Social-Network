@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Check if it's the all-posts page
   
   if (window.location.pathname === '/all_posts') {
-      document.querySelector('#compose-form').addEventListener('submit', submit_post);
+      
       document.querySelector('#all-posts').addEventListener('click', render_post);
       let apiUrl = `/all-posts`;
       render_post(apiUrl);
@@ -21,25 +21,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
 });
-
-function submit_post(event) {
-    event.preventDefault();
-    
-    const content = document.querySelector('#compose-content').value;
-    fetch('/post', {
-      method: 'POST',
-      body: JSON.stringify({
-          
-        content: content
-          
-      })
-    })
-    .then(response => response.json())
-    .then(result => {
-        window.location.reload();
-    });
-  }
-
 
 
 function render_post(apiUrl){ 
