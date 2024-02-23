@@ -13,6 +13,8 @@ urlpatterns = [
     path("profile/<str:username>", views.profile_view, name="profile"),
     path('follow_unfollow/<str:username>/', views.follow_unfollow, name='follow_unfollow'),
     path("post/<int:post_id>/like", views.like_post, name="like_post"),
+    path('image_upload', views.profile_pic_view, name='image_upload'),
+    path('success', views.success, name='success'),
     
 
     # API Routes

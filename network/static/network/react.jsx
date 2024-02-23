@@ -36,5 +36,8 @@ function CreatePost() {
         </div>
     );
 }
+
+
+
 ReactDOM.render(<CreatePost />, document.getElementById('react-root'));
 

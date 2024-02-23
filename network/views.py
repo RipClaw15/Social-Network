@@ -9,14 +9,36 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from django import forms
+from django.contrib import messages
 
 from .models import User, Post
 
 class ProfileForms(forms.ModelForm):
+    profileimg = forms.ImageField(label="Profile Picture")
 
     class Meta:
         model = User
-        fields = ['bio', 'profileimg']
+        fields = ('profileimg',)
+
+def profile_pic_view(request):
+    
+    if request.method == 'POST':
+        current_user = request.user
+        form = ProfileForms(request.POST or None, request.FILES or None, instance=current_user)
+        
+        if form.is_valid():
+            
+            form.save()
+           
+            
+            return redirect('profile', username=current_user.username)
+    else:
+        form = ProfileForms()
+
+    return render(request, 'profile.html', {'form': form})
+
+def success(request):
+    return HttpResponse('successfully uploaded')
 
 @csrf_exempt
 def index(request):
@@ -118,22 +140,37 @@ def profile_posts(request, username):
     
     return JsonResponse([post.serialize (request.user) for post in posts], safe=False)
 
+def edit_profile(request):
+    if request.user.is_authenticated:
+        current_user = request.user
+        user_form = ProfileForms(request.POST or None, request.FILES or None, instance=current_user)
+        if user_form.is_valid():
+            user_form.save()
+
+
+
 def profile_view(request, username):
     user = User.objects.get(username=username)
     following_count = user.followers.count()
     followers_count = user.following.count()
-     
+    posts_count = Post.objects.filter(author=user).count()
+    bio = user.bio
+    form = ProfileForms(instance=request.user)
     profile_img = user.profileimg
+    
     if request.user.is_authenticated:
         is_following = request.user.following.filter(username=username).exists()
     else:
         is_following = False
     return render(request, "network/profile.html", 
                   {'name':username, 
+                   'posts_count': posts_count,
                    'profile_img': profile_img,
+                   'bio': bio,
                    'following_count':following_count, 
                    'followers_count': followers_count, 
                    'is_following': is_following,
+                   'form': form
                    })
 
 def follow_list(request, username):

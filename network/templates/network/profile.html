@@ -3,28 +3,67 @@
 
 {% block body %}
 
+
     <div class="profile-section">
-        
-        <img src="{{ profile_img.url }}" alt="Profile Picture" width="100" class="prof-pic">
+        <div class="puopff">
+            <div class="puo">
+                <div class="profile-pic">
+                    <img src="{{ profile_img.url }}" alt="Profile Picture" width="100" class="prof-pic">             
+                </div>
+                <div class="username">
+                    <strong>{{ name }}</strong>
+                </div>
+                <div class="option">
+                    {% if user.is_authenticated %}
+                        {% if user.username != name %} 
+                            <form method="POST" action="{% url 'follow_unfollow' name %}">
+                                {% csrf_token %}
+                                <input type="submit" value="{% if is_following %}Unfollow{% else %}Follow{% endif %}">
+                            </form>
+                        {% else %}
+                            <button id="settings">
+                                Edit Profile
+                                <i class="fas fa-cog"></i>
+                            </button>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="bio">
+                <b>Bio: </b> 
+                 {{ bio }}
+            </div>
+            <div class="pff">
+                
+                <div id="nr-posts">
+                    <div> {{ posts_count }}</div>
+                    Posts
+                </div>
+                <button id="followers">
+                    <div> {{ following_count }}</div>
+                    Followers
+                </button>
+                <button id="followings">
+                    <div>{{ followers_count }}</div> 
+                    Following
+                </button>
             
-        <strong>{{ name }}</strong>
-        <button id="followers">
-            <div> {{ following_count }}</div>
-            Followers
-        </button>
-        {% if user.is_authenticated %}
-            {% if user.username != name %} 
-            <form method="POST" action="{% url 'follow_unfollow' name %}">
-                {% csrf_token %}
-                <input type="submit" value="{% if is_following %}Unfollow{% else %}Follow{% endif %}">
-            </form>
-            {% endif %}
-        {% endif %}
-        <button id="followings">
-            <div>{{ followers_count }}</div> 
-            Following
-        </button>
+            
+            </div>
+            <div class="profile-edit">
+                <form method="POST" enctype="multipart/form-data" action="{% url 'image_upload' %}">
+                    {% csrf_token %}
+                    <p>
+                        <label for="id_profileimg">Profile Picture:</label>
+                        <input type="file" name="profileimg" id="id_profileimg" required>
+                    </p>
+                    <button type="submit">Upload</button>
+                </form>
+            </div>
+        </div>
+
         
+
         <div class="modal" id="modal">
             <div class="modal-inner">
                 <h2 id="modal-title">Followers</h2>
@@ -39,7 +78,7 @@
     </div>
 
     <div id="app"></div>
-    
+
     <div id="posts-view">
     </div>
     {% block script %}

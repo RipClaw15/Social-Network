@@ -11,12 +11,21 @@
     
 }
 
+.puopff {
+    text-align: center;
+    width: 80%;
+}
+
+#nr-posts {
+    text-align: center;
+}
+
 textarea {
     width: 95%;
     
 }
 
-.edit-view{
+.edit-view, .profile-edit{
     display: none;
 }
 
@@ -39,7 +48,7 @@ textarea {
     align-items: center;
 }
 
-.like-button, .edit-button, #followers, #followings {
+.like-button, .edit-button, #followers, #followings ,#settings{
     background: none;
     border:none;
   }
@@ -49,11 +58,18 @@ textarea {
     height: 100px; 
     object-fit: cover;
 }
+.profile-pic {
+    text-align:center;
+    border-radius: 48%;
+    border: 2px solid #010101;
+}
 .post-pic {
     border-radius: 48%;
     width: 50px; 
     height: 50px; 
     object-fit: cover;
+    border-radius: 48%;
+    border: 1px solid #010101;
 }
 
 .postDiv {
@@ -226,8 +242,22 @@ nav {
     margin: 10px;
 }
 
-.profile-section {
+.profile-section  {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content:center;
+    
+}
+
+.pff, .puo
+{
+    display: flex;
+    align-items: center;
+    justify-content:space-evenly;
+    padding: 10px;
+}
+
+.bio {
+    margin-left: 20%;
+    text-align: left;
 }

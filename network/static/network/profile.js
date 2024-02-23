@@ -2,6 +2,13 @@ document.addEventListener('DOMContentLoaded', function() {
   
   const followersBtn = document.getElementById("followers");
   const followingsBtn = document.getElementById("followings");
+  var settingsButton = document.getElementById("settings");
+  if (settingsButton) {
+    settingsButton.addEventListener("click", function(){
+      document.querySelector('.pff').style.display = 'none';
+      document.querySelector('.profile-edit').style.display = 'block';
+    });
+  }
 
   
   ModalRender(followersBtn);
