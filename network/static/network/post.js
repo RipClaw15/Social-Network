@@ -19,8 +19,34 @@ document.addEventListener('DOMContentLoaded', function() {
       let apiUrl = `/profile-posts/${username}`;
       render_post(apiUrl);
   }
+
+  user_suggestions()
   
 });
+
+function user_suggestions() {
+  fetch(`/suggestions`)
+    .then(response => response.json())
+    .then(data => {
+      
+      const suggestions = data.suggestions; 
+      if (Array.isArray(suggestions)) { 
+        let suggestionList = document.createElement('div');
+        document.querySelector('.user-suggestions').appendChild(suggestionList);
+        suggestions.forEach(suggestionsData => {
+          
+          let suggestionDiv = createSugesstionHTML(suggestionsData);
+          suggestionList.appendChild(suggestionDiv);
+        });
+      } else {
+        console.error('Invalid format of suggestions:', suggestions);
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching suggestions:', error);
+    });
+}
+
 
 
 function render_post(apiUrl){ 
@@ -96,7 +122,13 @@ function render_post(apiUrl){
         });
     });
 }
-
+  function createSugesstionHTML(suggestionData){
+    const suggestionDiv = document.createElement('div');
+    suggestionDiv.innerHTML = `<div>
+                                    <a href="/profile/${suggestionData}" style="color: inherit; text-decoration: none;"><i class="fa-solid fa-circle-user"></i> ${suggestionData}</a>
+                               </div>`
+    return suggestionDiv;
+  }
 
 
 

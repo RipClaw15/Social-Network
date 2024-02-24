@@ -4,8 +4,20 @@
 {% block body %}
 
     {% if message %}
-        <div>{{ message }}</div>
+        <div style='text-align:center;'>{{ message }}</div>
     {% endif %}
+
+    <div style='text-align:center;'>
+            
+        <h1>
+            <b>
+                <strong>
+                    For You
+                </strong>
+            </b>
+        </h1>
+    </div>
+
     {% if user.is_authenticated %}
 
     <script type="text/babel" src="{% static 'network/react.jsx' %}"></script>

@@ -82,7 +82,7 @@ textarea {
 
 .left-bar {
     border: 1px solid #010101;
-    min-width:20vh;
+    min-width:40vh;
 }
 
 
@@ -100,6 +100,7 @@ body {
     padding: 0;
     display:grid;
     grid-template-columns: auto 1fr auto;
+    font-size: 2.5vh;
 }
 
 .body {
@@ -110,7 +111,7 @@ body {
     background-color: lightgray;
     padding: 20px;
     border: 1px solid #010101;
-    min-width:20vh;
+    min-width:40vh;
 }
 
 nav {
@@ -266,8 +267,10 @@ nav {
     
     display: flex;
     align-items: center;
-    justify-content:space-between;
-    width: 100%;
+    justify-content:space-around;
+    width: 75vh;
+    
+    
 }
 
 .Tinger {
@@ -308,4 +311,11 @@ li {
 
 #ind {
     color: #010101;
+}
+
+h1 {
+    font-size: 3em; 
+}
+h5 {
+    font-size: 2em; 
 }

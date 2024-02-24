@@ -3,7 +3,17 @@
 {% block body %}
 
     {% if user.is_authenticated %}
-        People you follow
+        <div style='text-align:center;'>
+            
+            <h1>
+                <b>
+                    <strong>
+                        
+                        People you follow
+                    </strong>
+                </b>
+            </h1>
+        </div>
         <div id="posts-view">
         </div>
         {% block script %}

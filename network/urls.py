@@ -18,6 +18,7 @@ urlpatterns = [
     path('success', views.success, name='success'),
     path('search', views.search_user, name="search"),
     
+    
 
     # API Routes
     path("post", views.compose, name="compose"),
@@ -27,5 +28,6 @@ urlpatterns = [
     path("profile-list/<str:username>", views.follow_list, name="follow_list"),
     path("profile-posts/<str:username>", views.profile_posts, name="profile-posts"),
     path("post/<int:post_id>/liked_by_current_user", views.liked_by_current_user, name="liked_by_current_user"),
+    path('suggestions', views.user_suggestion, name="suggestions"),
     
 ]

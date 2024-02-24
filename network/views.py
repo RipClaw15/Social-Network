@@ -1,4 +1,6 @@
 import json
+import random
+
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
@@ -10,6 +12,7 @@ from django.http import JsonResponse
 from django.shortcuts import redirect
 from django import forms
 from django.contrib import messages
+
 
 from .models import User, Post
 
@@ -27,9 +30,33 @@ class BioForms(forms.ModelForm):
         model = User
         fields = ('bio',)
 
-def search_user(request):
-    pass
+def user_suggestion(request):
+    usernames = [user.username for user in User.objects.all()]
+    random.shuffle(usernames)
+    if usernames:
+        return JsonResponse({"suggestions": usernames}, status=201)
+        
+    else:
+        return JsonResponse({"suggestions": 'No one to know'}, status=201)
+            
+       
 
+
+def search_user(request):
+    if request.method == "GET":
+        q = request.GET.get('q', '')
+        usernames = [user.username for user in User.objects.all()]        
+        lowercase_results = [item.lower() for item in usernames]
+        lowercase_dict = {item.lower(): item for item in usernames}
+        sub_strings = [lowercase_dict[item] for item in lowercase_results if q.lower() in item]
+
+        if sub_strings:
+            return render(request, "network/search.html", {"entries": sub_strings})
+        else:
+            return render(request, "network/search.html", {"message": f"No {q} user found."})
+    else:
+        return render(request, "network/search.html", {"message": "Method is not GET!"})
+    
 def edit_bio(request):
     if request.user.is_authenticated:
         if request.method == 'POST':
@@ -119,6 +146,8 @@ def compose(request):
     return JsonResponse({"error": "POST request required."}, status=400)
     
 def render_posts(request):
+    
+    
     base_query = Post.objects
     posts = base_query.order_by("-date_posted").all()
     return JsonResponse([post.serialize(request.user) for post in posts], safe=False)
