@@ -20,22 +20,28 @@ class ProfileForms(forms.ModelForm):
         model = User
         fields = ('profileimg',)
 
+
 def profile_pic_view(request):
     
-    if request.method == 'POST':
-        current_user = request.user
-        form = ProfileForms(request.POST or None, request.FILES or None, instance=current_user)
-        
-        if form.is_valid():
+    if request.user.is_authenticated:
+        print(request.user.is_authenticated)
+        if request.method == 'POST':
+            current_user = request.user
+            form = ProfileForms(request.POST or None, request.FILES or None, instance=current_user)
             
-            form.save()
-           
+            if form.is_valid():
+                
+                form.save()
             
-            return redirect('profile', username=current_user.username)
-    else:
-        form = ProfileForms()
+                
+                return redirect('profile', username=current_user.username)
+        else:
+            form = ProfileForms()
 
-    return render(request, 'profile.html', {'form': form})
+        return render(request, 'profile.html', {'form': form})
+    else:
+        return redirect('login')
+
 
 def success(request):
     return HttpResponse('successfully uploaded')
@@ -150,28 +156,29 @@ def edit_profile(request):
 
 
 def profile_view(request, username):
-    user = User.objects.get(username=username)
-    following_count = user.followers.count()
-    followers_count = user.following.count()
-    posts_count = Post.objects.filter(author=user).count()
-    bio = user.bio
-    form = ProfileForms(instance=request.user)
-    profile_img = user.profileimg
-    
     if request.user.is_authenticated:
+        user = User.objects.get(username=username)
+        following_count = user.followers.count()
+        followers_count = user.following.count()
+        posts_count = Post.objects.filter(author=user).count()
+        bio = user.bio
+        form = ProfileForms(instance=request.user)
+        profile_img = user.profileimg
+        
         is_following = request.user.following.filter(username=username).exists()
+        
+        return render(request, "network/profile.html", 
+                    {'name':username, 
+                    'posts_count': posts_count,
+                    'profile_img': profile_img,
+                    'bio': bio,
+                    'following_count':following_count, 
+                    'followers_count': followers_count, 
+                    'is_following': is_following,
+                    'form': form
+                    })
     else:
-        is_following = False
-    return render(request, "network/profile.html", 
-                  {'name':username, 
-                   'posts_count': posts_count,
-                   'profile_img': profile_img,
-                   'bio': bio,
-                   'following_count':following_count, 
-                   'followers_count': followers_count, 
-                   'is_following': is_following,
-                   'form': form
-                   })
+        return redirect('login')
 
 def follow_list(request, username):
     user = User.objects.get(username=username)
