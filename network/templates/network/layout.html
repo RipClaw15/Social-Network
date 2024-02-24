@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>{% block title %}Social Network{% endblock %}</title>
+        <title>{% block title %}Tinger{% endblock %}</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link rel="stylesheet" href="{% static 'network/styles.css' %}">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -14,31 +14,73 @@
     <body>
         <div class="left-bar">
             <nav>
-                <a class="navbar-brand" href="{% url 'index' %}">Network</a>
+                <a class="navbar-brand" href="{% url 'index' %}">
+                    <h1>
+                        <b>
+                            <strong>
+                                <i class="fa-solid fa-hashtag"></i>
+                                Tinger
+                            </strong>
+                        </b>
+                    </h1>
+                </a>
             
                 <div>
                 <ul class="navbar-nav mr-auto">
                     {% if user.is_authenticated %}
                         <li class="nav-item">
-                            <a id="username-link" class="nav-link" href="/profile/{{user.username}}"><strong>{{ user.username }}</strong></a>
+                            <a id="username-link" class="nav-link" href="/profile/{{user.username}}">
+                                <strong>
+                                    <i class="fa-solid fa-user"></i>
+                                    {{ user.username }}
+                                    
+                                </strong></a>
                         </li>
                     {% endif %}
                     <li class="nav-item">
-                    <a id="all-posts" class="nav-link" href="{% url 'all_posts' %}">All Posts</a>
+                        <a id="all-posts" class="nav-link" href="{% url 'all_posts' %}">
+                            <i class="fa-solid fa-globe"></i>
+                            All Posts
+                            
+                        </a>
                     </li>
+                    
                     {% if user.is_authenticated %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'following' %}">Following</a>
+                            <a id="search" class="nav-link" href="{% url 'search' %}"> 
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                Search User 
+                                
+                            </a>       
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                            <a class="nav-link" href="{% url 'following' %}">
+                                <i class="fa-solid fa-person-walking"></i>
+                                Following
+                                
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'logout' %}">
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                                Log Out
+                                
+                            </a>
                         </li>
                     {% else %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'login' %}">Log In</a>
+                            <a class="nav-link" href="{% url 'login' %}">
+                                <i class="fa-solid fa-right-to-bracket"></i>
+                                Log In
+                                
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'register' %}">Register</a>
+                            <a class="nav-link" href="{% url 'register' %}">
+                                <i class="fa-solid fa-id-card"></i>
+                                Register
+                                
+                            </a>
                         </li>
                     {% endif %}
                 </ul>
@@ -49,6 +91,10 @@
             {% block body %}
             {% endblock %}
         </div>
-        <div class="right-bar">some random text</div>
+        <div class="right-bar">
+            <i class="fa-solid fa-user-plus"></i>
+            Users to follow
+            
+        </div>
     </body>
 </html>

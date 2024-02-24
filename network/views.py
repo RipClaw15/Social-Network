@@ -20,6 +20,30 @@ class ProfileForms(forms.ModelForm):
         model = User
         fields = ('profileimg',)
 
+class BioForms(forms.ModelForm):
+    bio = forms.CharField(label="Bio")
+
+    class Meta:
+        model = User
+        fields = ('bio',)
+
+def search_user(request):
+    pass
+
+def edit_bio(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            current_user = request.user
+            bio_form = BioForms(request.POST, instance=current_user)
+            if bio_form.is_valid():
+                bio_form.save()
+                return redirect('profile', username=current_user.username)
+        else:
+            form = BioForms()
+        return render(request, 'profile.html', {'form': form})
+    else:
+        return redirect('login')
+        
 
 def profile_pic_view(request):
     
@@ -48,7 +72,10 @@ def success(request):
 
 @csrf_exempt
 def index(request):
-    return render(request, "network/index.html")
+    if request.user.is_authenticated:
+        return redirect('all_posts')
+    else:
+        return render(request, "network/index.html")
 
 def all_posts(request):
     return render(request, "network/all_posts.html")
@@ -145,15 +172,6 @@ def profile_posts(request, username):
     posts = base_query.order_by("-date_posted").all()
     
     return JsonResponse([post.serialize (request.user) for post in posts], safe=False)
-
-def edit_profile(request):
-    if request.user.is_authenticated:
-        current_user = request.user
-        user_form = ProfileForms(request.POST or None, request.FILES or None, instance=current_user)
-        if user_form.is_valid():
-            user_form.save()
-
-
 
 def profile_view(request, username):
     if request.user.is_authenticated:

@@ -13,7 +13,7 @@
 
 .puopff {
     text-align: center;
-    width: 80%;
+    width: 60%;
 }
 
 #nr-posts {
@@ -48,7 +48,7 @@ textarea {
     align-items: center;
 }
 
-.like-button, .edit-button, #followers, #followings ,#settings{
+.like-button, .edit-button, #followers, #followings {
     background: none;
     border:none;
   }
@@ -82,6 +82,7 @@ textarea {
 
 .left-bar {
     border: 1px solid #010101;
+    min-width:20vh;
 }
 
 
@@ -109,6 +110,7 @@ body {
     background-color: lightgray;
     padding: 20px;
     border: 1px solid #010101;
+    min-width:20vh;
 }
 
 nav {
@@ -118,10 +120,9 @@ nav {
 
   ul {
     list-style-type: none;
-    margin: 0;
-    padding: 0;
+    margin: 10%;
     display: flex;
-    align-items: center;
+    align-items: start;
   }
 
 
@@ -175,26 +176,30 @@ nav {
     margin-top: 10px;
 }
 
+
 .login-form {
 
     text-align:center;
     justify-content: center;
     align-items: center;
-    height: 40vh;
+    
     margin: 0;
     background-color:lightsteelblue;
     max-width: 400px; 
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 8px;
+    width: 150%;
 }
+
+
 
 .register-form {
 
     text-align:center;
     justify-content: center;
     align-items: center;
-    height: 60vh;
+    width: 150%;
     margin: 0;
     background-color:lightsteelblue;
     max-width: 400px; /* Set a maximum width for the form */
@@ -258,6 +263,49 @@ nav {
 }
 
 .bio {
+    
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+    width: 100%;
+}
+
+.Tinger {
+    display: flex;
+    align-items: center;
+    justify-content:left;
+    
+    margin-top: 40px;
     margin-left: 20%;
-    text-align: left;
+}
+.info {
+    display: flex;
+    align-items: center;
+    justify-content:left;
+    
+    margin-left: 20%;
+    padding: 20px;
+}
+body {
+    min-height: 100vh;
+}
+
+#edit-bio-btn, #settings {
+    border-radius: 15%;
+    border: 2px solid #010101;
+}
+
+.edit-bio {
+    
+    display: none;
+    
+}
+
+li {
+    padding: 0;
+    margin: 0;
+}
+
+#ind {
+    color: #010101;
 }

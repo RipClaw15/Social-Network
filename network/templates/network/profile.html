@@ -29,12 +29,39 @@
                     {% endif %}
                 </div>
             </div>
-            <div class="bio">
-                <b>Bio: </b> 
-                 {{ bio }}
+
+            <div class="bio"> 
+                <div><b>Bio: </b> 
+                {{ bio }}
+                </div>
+                {% if user.is_authenticated %}
+                        {% if user.username == name %} 
+                            <button id="edit-bio-btn">
+                                Edit Bio
+                                <i class="fas fa-cog"></i>
+                            </button>
+                        {% endif %}
+                {% endif %}
             </div>
-            <div class="pff">
+            
                 
+                            <form action="/edit-bio" method="post" class="edit-bio">
+                                {% csrf_token %}
+                                
+                                    <p>
+                                        <label for="id_profilebio"><b>Bio: </b> </label>
+                                        <input type="text" name="bio" id="id_profilebio" required>
+                                    </p>
+                                
+                                <button type="submit" id="edit-bio-btn">
+                                    Save Bio 
+                                    <i class="far fa-save"></i>
+                                </button>
+                            </form>
+                
+            
+
+            <div class="pff">  
                 <div id="nr-posts">
                     <div> {{ posts_count }}</div>
                     Posts
@@ -47,8 +74,7 @@
                     <div>{{ followers_count }}</div> 
                     Following
                 </button>
-            
-            
+                        
             </div>
             <div class="profile-edit">
                 <form method="POST" enctype="multipart/form-data" action="{% url 'image_upload' %}">

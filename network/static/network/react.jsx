@@ -30,14 +30,13 @@ function CreatePost() {
                     />
                     <br />
                     <br />
-                    <button type="submit" class="btn btn-primary btn-lg btn-block">Post</button> 
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">
+                        Post                       
+                    </button> 
                 </form>  
             </div>
         </div>
     );
 }
 
-
-
 ReactDOM.render(<CreatePost />, document.getElementById('react-root'));
-

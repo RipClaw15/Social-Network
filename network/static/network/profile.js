@@ -3,14 +3,26 @@ document.addEventListener('DOMContentLoaded', function() {
   const followersBtn = document.getElementById("followers");
   const followingsBtn = document.getElementById("followings");
   var settingsButton = document.getElementById("settings");
+  var editButton = document.getElementById("edit-bio-btn");
   if (settingsButton) {
     settingsButton.addEventListener("click", function(){
       document.querySelector('.pff').style.display = 'none';
       document.querySelector('.profile-edit').style.display = 'block';
     });
-  }
-
   
+  }
+  if (editButton) {
+    
+    editButton.addEventListener("click", function(){
+      console.log("click");
+      document.querySelector('.bio').style.display = 'none';
+      document.querySelector('.edit-bio').style.display = 'block';
+      document.querySelector('.edit-bio').style.display = "flex";
+      document.querySelector('.edit-bio').style.alignItems = "center";
+      document.querySelector('.edit-bio').style.justifyContent = "space-between";
+      
+    });
+  }
   ModalRender(followersBtn);
   ModalRender(followingsBtn);
 });

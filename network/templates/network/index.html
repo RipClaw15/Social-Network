@@ -6,23 +6,32 @@
     {% if message %}
         <div>{{ message }}</div>
     {% endif %}
-    {% if user.is_authenticated %}
-    
 
-    
-        <div class="uform">
-            <div class="upload-form">
-                <form id="compose-form" action="{% url 'index' %}" method="post">
-                    {% csrf_token %}
-                    <input class="form-control" id="compose-content" placeholder="What's on your mind?">
-                    <br>
-                    <button type="submit" class="btn btn-primary btn-lg btn-block">Post</button>
-                </form>
-            </div>
-        </div>
-    {% endif %}
-
-   Welcome to my Page!
+    <div class="Tinger">   
+        <h1>
+            <b>
+                <strong>
+                    <i class="fa-solid fa-hashtag"></i>
+                    Tinger
+                </strong>
+            </b>
+        </h1>
+    </div>
+    <div class="info">
+        <h3>
+            <p>
+                Connect with friends and the world around you on Tinger
+            </p>
+            <a id= "ind" href="{% url 'login' %}"> Log in </a>
+                 to start Tingering around the world <i class="fa-solid fa-globe"></i>
+            <br>
+            <br>
+                New Here? You can 
+                <a id= "ind" href="{% url 'register' %}"> Register </a>
+                 for Free
+            
+        </h3>
+    </div>
    {% block script %}
    <script src="{% static 'network/post.js' %}"></script>
         <script>
