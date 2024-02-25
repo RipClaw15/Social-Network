@@ -1,5 +1,6 @@
 import json
 import random
+import time
 
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
@@ -31,11 +32,14 @@ class BioForms(forms.ModelForm):
         fields = ('bio',)
 
 def user_suggestion(request):
-    usernames = [user.username for user in User.objects.all()]
-    random.shuffle(usernames)
-    if usernames:
-        return JsonResponse({"suggestions": usernames}, status=201)
-        
+    
+    user_info = [(user.username, user.profileimg) for user in User.objects.all()]
+    
+    user_info = [{'username': user.username, 'profileimg': '/media/' + str(user.profileimg)} for user in User.objects.all() if user != request.user]
+    random.shuffle(user_info)   
+    if user_info:
+        return JsonResponse(user_info, safe=False)
+
     else:
         return JsonResponse({"suggestions": 'No one to know'}, status=201)
             
@@ -53,7 +57,7 @@ def search_user(request):
         if sub_strings:
             return render(request, "network/search.html", {"entries": sub_strings})
         else:
-            return render(request, "network/search.html", {"message": f"No {q} user found."})
+            return render(request, "network/search.html", {"message": f"No user with {q} in it's name found."})
     else:
         return render(request, "network/search.html", {"message": "Method is not GET!"})
     
@@ -147,9 +151,12 @@ def compose(request):
     
 def render_posts(request):
     
+    start = int(request.GET.get("start") or 0)
+    end = int(request.GET.get("end") or (start + 9))
     
     base_query = Post.objects
-    posts = base_query.order_by("-date_posted").all()
+    posts = base_query.order_by("-date_posted")[start:end+1]
+    time.sleep(1)
     return JsonResponse([post.serialize(request.user) for post in posts], safe=False)
 
 def follow_unfollow(request, username):
@@ -202,9 +209,15 @@ def profile_posts(request, username):
     
     return JsonResponse([post.serialize (request.user) for post in posts], safe=False)
 
+from django.http import Http404
+
 def profile_view(request, username):
-    if request.user.is_authenticated:
+    try:
         user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        raise Http404("User does not exist")
+
+    if request.user.is_authenticated:
         following_count = user.followers.count()
         followers_count = user.following.count()
         posts_count = Post.objects.filter(author=user).count()
@@ -215,17 +228,18 @@ def profile_view(request, username):
         is_following = request.user.following.filter(username=username).exists()
         
         return render(request, "network/profile.html", 
-                    {'name':username, 
-                    'posts_count': posts_count,
-                    'profile_img': profile_img,
-                    'bio': bio,
-                    'following_count':following_count, 
-                    'followers_count': followers_count, 
-                    'is_following': is_following,
-                    'form': form
-                    })
+                      {'name':username, 
+                       'posts_count': posts_count,
+                       'profile_img': profile_img,
+                       'bio': bio,
+                       'following_count': following_count, 
+                       'followers_count': followers_count, 
+                       'is_following': is_following,
+                       'form': form
+                       })
     else:
         return redirect('login')
+
 
 def follow_list(request, username):
     user = User.objects.get(username=username)

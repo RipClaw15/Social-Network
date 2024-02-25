@@ -3,18 +3,27 @@
 
 {% block body %}
 
-{% if message %}
-        <div>{{ message }}</div>
-    {% endif %}
+
 
 {% if user.is_authenticated %}
 {% endif %}
-    <h1>
-        Search results
-    </h1>
+    <div style='text-align:center;'>        
+        <h1>
+            <b>
+                <strong>
+                    
+                    Search Results
+                </strong>
+            </b>
+        </h1>
+    </div>
+
+    {% if message %}
+        <div style='text-align:center;'> {{ message }}</div>
+    {% endif %}
     
     {% for entry in entries %}
-            <div><a id="ind" href="/profile/{{entry}}">{{ entry }} </a></div>
+        <div style='text-align:center;'><a id="ind" href="/profile/{{entry}}">{{ entry }} </a></div>
             
         {% endfor %}
    

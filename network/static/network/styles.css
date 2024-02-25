@@ -263,21 +263,17 @@ nav {
     padding: 10px;
 }
 
-.bio {
-    
+.bio {   
     display: flex;
     align-items: center;
     justify-content:space-around;
     width: 75vh;
-    
-    
 }
 
 .Tinger {
     display: flex;
     align-items: center;
     justify-content:left;
-    
     margin-top: 40px;
     margin-left: 20%;
 }
@@ -285,7 +281,6 @@ nav {
     display: flex;
     align-items: center;
     justify-content:left;
-    
     margin-left: 20%;
     padding: 20px;
 }
@@ -298,10 +293,8 @@ body {
     border: 2px solid #010101;
 }
 
-.edit-bio {
-    
+.edit-bio {   
     display: none;
-    
 }
 
 li {
@@ -318,4 +311,8 @@ h1 {
 }
 h5 {
     font-size: 2em; 
+}
+
+.suggestionDiv {
+    padding: 5px;
 }

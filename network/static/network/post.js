@@ -1,11 +1,18 @@
+let counter = 0;
+
+const quantity = 10;
+
 document.addEventListener('DOMContentLoaded', function() {
   // Check if it's the all-posts page
   
   if (window.location.pathname === '/all_posts') {
-      
-      document.querySelector('#all-posts').addEventListener('click', render_post);
-      let apiUrl = `/all-posts`;
-      render_post(apiUrl);
+    
+      more_posts();
+      window.onscroll = () => {
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+          more_posts();
+        }
+    };
   }
 
   if (window.location.pathname === '/following') {
@@ -24,14 +31,26 @@ document.addEventListener('DOMContentLoaded', function() {
   
 });
 
+function more_posts(){
+  const start = counter;
+  const end = start + quantity - 1;
+  counter = end + 1;
+  document.querySelector('#all-posts').addEventListener('click', render_post);
+  let apiUrl = `/posts?start=${start}&end=${end}`;
+  render_post(apiUrl);
+}
+
+
+
 function user_suggestions() {
   fetch(`/suggestions`)
     .then(response => response.json())
     .then(data => {
       
-      const suggestions = data.suggestions; 
+      const suggestions = data;
       if (Array.isArray(suggestions)) { 
         let suggestionList = document.createElement('div');
+        suggestionList.classList.add('suggestions');
         document.querySelector('.user-suggestions').appendChild(suggestionList);
         suggestions.forEach(suggestionsData => {
           
@@ -124,9 +143,12 @@ function render_post(apiUrl){
 }
   function createSugesstionHTML(suggestionData){
     const suggestionDiv = document.createElement('div');
-    suggestionDiv.innerHTML = `<div>
-                                    <a href="/profile/${suggestionData}" style="color: inherit; text-decoration: none;"><i class="fa-solid fa-circle-user"></i> ${suggestionData}</a>
-                               </div>`
+    suggestionDiv.setAttribute('class','suggestionDiv');
+    
+    suggestionDiv.innerHTML = `
+                               <a href="/profile/${suggestionData['username']}" style="color: inherit; text-decoration: none;"><img src="${suggestionData['profileimg']}" width="50" class="post-pic"> ${suggestionData['username']}</a>
+                               
+                               `
     return suggestionDiv;
   }
 
@@ -136,6 +158,7 @@ function render_post(apiUrl){
 
           const postDiv = document.createElement('div');
           postDiv.setAttribute('class','postDiv')
+          
           postDiv.innerHTML = `
                               <div class="edit-view" id="edit-view-${postData['id']}">
 
@@ -187,7 +210,7 @@ function render_post(apiUrl){
 
   }
 
-  function edit_post (postData, postDiv)
+  function edit_post (postData)
   {
     if (postData.is_author){
       document.querySelector('#edit-' + postData['id']).addEventListener('click', (event) => {

@@ -22,6 +22,7 @@ urlpatterns = [
 
     # API Routes
     path("post", views.compose, name="compose"),
+    path("posts", views.render_posts, name="posts"),
     path("all-posts", views.render_posts, name="posts"),
     path('post/<int:post_id>/edit', views.edit, name="edit"),
     path("following-posts", views.following_posts, name="following_posts"),
