@@ -161,7 +161,7 @@ def render_posts(request):
 
 def follow_unfollow(request, username):
     if request.method == 'POST':
-        # Get the user to be followed/unfollowed
+        
         other_user = User.objects.get(username=username)
         if request.user.following.filter(username=username).exists():
             request.user.following.remove(other_user)
@@ -172,13 +172,13 @@ def follow_unfollow(request, username):
     return redirect('profile', username=username)
 
 def liked_by_current_user(request, post_id):
-    # Get the post
+    
     post = Post.objects.get(id=post_id)
 
-    # Check if the current user has liked this post
+    
     liked = request.user.id in post.likes.values_list('id', flat=True)
    
-    # Return the result as a JSON response
+    
     return JsonResponse({'liked': liked})
 
 
