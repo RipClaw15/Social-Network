@@ -2,7 +2,7 @@ from django.test import TestCase
 from .models import User, Post
 
 
-from selenium import webdriver
+
 from django.test import LiveServerTestCase
 
 class UserModelTest(TestCase):
@@ -17,6 +17,6 @@ class UserModelTest(TestCase):
         user1.following.add(user2)
         self.assertEqual(user1.who_I_follow(), ["user2"])
 
-driver = webdriver.Chrome()
+
 
 
