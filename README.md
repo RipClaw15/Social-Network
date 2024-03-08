@@ -38,4 +38,4 @@ For any questions or assistance related to the project, feel free to open an iss
 
 ## License
 
-This project is provided as part of the CS50 Web course and is subject to the course license terms.
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
