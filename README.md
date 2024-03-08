@@ -40,5 +40,5 @@ For any questions or assistance related to the project, feel free to open an iss
 
 This project is licensed under the MIT License
 
-Copyright (c) [2024] [Osz Gyorgy Csongor]
+Copyright (c) 2024 Osz Gyorgy Csongor
 
