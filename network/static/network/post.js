@@ -3,7 +3,7 @@ let counter = 0;
 const quantity = 10;
 
 document.addEventListener('DOMContentLoaded', function() {
-  // Check if it's the all-posts page
+  
   
   if (window.location.pathname === '/all_posts') {
     
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
       render_post(apiUrl);
   }
   
-  // Check if it's a profile page
+  
   if (window.location.pathname.startsWith('/profile/')) {
       let username = window.location.pathname.split('/')[2];
       let apiUrl = `/profile-posts/${username}`;
@@ -222,11 +222,26 @@ function render_post(apiUrl){
         document.querySelector('#post-' + postId).style.display= 'none';
         document.querySelector('#edit-view-' + postId).style.display = 'block';
         document.querySelector('#edit-view-' + postId).innerHTML = 
-        `<div class="edit-form">
-            <h3>Edit Post</h3>
+        `<div class="edit-form">  
+            <div class="up-row">
+            <span class="author">
+              <img src="${postData['author'].profileimg}" alt="Profile Picture" width="100" class="post-pic">
+                By 
+                  <b>
+                    <a href="/profile/${postData['author'].username}" style="color: inherit; text-decoration: none;">${postData['author'].username}</a>
+                  </b>
+            </span>
+            <span class="date-posted">
+              <b>
+                ${postData['date_posted']}
+              </b>
+            </span>
+          </div>
+          <hr>
+          <h3>Edit Post</h3>
               <form id="compose-form-${postData['id']}">
                 <textarea id="compose-body-${postData['id']}"></textarea>
-                <br>
+                <hr>
                 <input type="submit" class="btn btn-primary"/>
               </form>
          </div>    `;
