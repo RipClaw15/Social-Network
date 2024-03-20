@@ -26,7 +26,8 @@ For detailed instructions on setting up and running the project, refer to the [p
 
 ## Video Demo
 
-https://www.youtube.com/watch?v=pGHg-3zu1xY
+[![Network](http://img.youtube.com/vi/pGHg-3zu1xY/0.jpg)](http://www.youtube.com/watch?v=pGHg-3zu1xY)
+
 
 ## Contributing
 
