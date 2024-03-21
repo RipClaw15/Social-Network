@@ -2,6 +2,11 @@
 
 Welcome to the Social Network project repository! This project is a social media platform designed to connect users, share content, and engage with others in a virtual community. Built using Python, Django, HTML, CSS, JavaScript, and React, Social Network offers a range of features to enhance social interactions online. The project utilizes Django models for creating an SQL database, implements user testing, includes Docker configuration, and utilizes GitHub Actions for continuous integration.
 
+## Video Demo
+
+[![Network](http://img.youtube.com/vi/pGHg-3zu1xY/0.jpg)](http://www.youtube.com/watch?v=pGHg-3zu1xY)
+
+
 ## Key Features
 
 - **User Authentication:** Secure user authentication system allowing users to register, login, and logout.
@@ -23,10 +28,6 @@ To get started with Social Network, follow these steps:
 4. Run the application locally using the provided Docker configuration.
 
 For detailed instructions on setting up and running the project, refer to the [project documentation](link_to_documentation).
-
-## Video Demo
-
-[![Network](http://img.youtube.com/vi/pGHg-3zu1xY/0.jpg)](http://www.youtube.com/watch?v=pGHg-3zu1xY)
 
 
 ## Contributing
