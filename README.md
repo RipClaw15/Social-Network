@@ -27,7 +27,6 @@ To get started with Social Network, follow these steps:
 3. Configure the database settings using Django models.
 4. Run the application locally using the provided Docker configuration.
 
-For detailed instructions on setting up and running the project, refer to the [project documentation](link_to_documentation).
 
 
 ## Contributing
