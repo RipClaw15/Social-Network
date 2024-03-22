@@ -4,7 +4,7 @@ Welcome to the Social Network project repository! This project is a social media
 
 ## Video Demo
 
-[![Network](http://img.youtube.com/vi/pGHg-3zu1xY/0.jpg)](http://www.youtube.com/watch?v=pGHg-3zu1xY)
+[![Network](http://img.youtube.com/vi/tEuCQ4-J64w/0.jpg)](http://www.youtube.com/watch?v=tEuCQ4-J64w)
 
 
 ## Key Features
